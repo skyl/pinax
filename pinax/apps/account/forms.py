@@ -159,7 +159,10 @@ class OpenIDSignupForm(forms.Form):
         self.openid = kwargs.pop("openid")
         # TODO: do something with this?
         reserved_usernames = kwargs.pop("reserved_usernames")
-        no_duplicate_emails = kwargs.pop("no_duplicate_emails")
+        try:
+            no_duplicate_emails = kwargs.pop("no_duplicate_emails")
+        except:
+            pass
         super(OpenIDSignupForm, self).__init__(*args, **kwargs)
     
     def clean_username(self):
