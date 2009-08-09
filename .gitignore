@@ -3,6 +3,7 @@ dev*.db
 local_settings.py
 Pinax.egg-info/*
 *.egg
+*.swp
 docs/.build
 docs/external/ajax-validation
 docs/external/announcements
