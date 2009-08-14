@@ -91,6 +91,7 @@ def tasks(request, group_slug=None, template_name="tasks/task_list.html", bridge
         "group_base": group_base,
         "task_filter": task_filter,
         "tasks": task_filter.qs,
+        "querystring": request.GET.urlencode(),
     }, context_instance=RequestContext(request))
 
 
@@ -349,6 +350,28 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
         assigned_tasks = group.content_objects(assigned_tasks)        
         created_tasks = group.content_objects(created_tasks)
     
+    # default filtering
+    state_keys = dict(workflow.STATE_CHOICES).keys()
+    default_states = set(state_keys).difference(
+        # don't show these states
+        set(["2", "3"])
+    )
+    
+    # have to store for each prefix because initial data isn't support on the
+    # FilterSet
+    filter_data = {
+        "a-state": list(default_states),
+        "c-state": list(default_states),
+        "n-state": list(default_states),
+    }
+    filter_data.update(request.GET)
+    
+    assigned_filter = TaskFilter(filter_data, queryset=assigned_tasks, prefix="a")
+    created_filter = TaskFilter(filter_data, queryset=created_tasks, prefix="c")
+    
+    assigned_tasks = assigned_filter.qs
+    created_tasks = created_filter.qs
+    
     assigned_tasks = assigned_tasks.order_by("state", "-modified") # @@@ filter(project__deleted=False)
     created_tasks = created_tasks.order_by("state", "-modified") # @@@ filter(project__deleted=False)
     
@@ -356,6 +379,9 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
         tables = ["tasks_nudge"],
         where = ["tasks_nudge.id = tasks_task.id"],
     )
+    
+    nudged_filter = TaskFilter(filter_data, queryset=nudged_tasks, prefix="n")
+    nudged_tasks = nudged_filter.qs
     
     if group:
         url = bridge.reverse("tasks_mini_list", group)
@@ -371,6 +397,9 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
 
     return render_to_response(template_name, {
         "group": group,
+        "assigned_filter": assigned_filter,
+        "created_filter": created_filter,
+        "nudged_filter": nudged_filter,
         "assigned_tasks": assigned_tasks,
         "created_tasks": created_tasks,
         "nudged_tasks": nudged_tasks,
@@ -415,6 +444,22 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
         tasks = Task.objects.filter(object_id=None)
         group_base = None
     
+    # default filtering
+    state_keys = dict(workflow.STATE_CHOICES).keys()
+    default_states = set(state_keys).difference(
+        # don't show these states
+        set(["2", "3"])
+    )
+    
+    # have to store for each prefix because initial data isn't support on the
+    # FilterSet
+    filter_data = {
+        "state": list(default_states),
+    }
+    filter_data.update(request.GET)
+    
+    task_filter = TaskFilter(filter_data, queryset=tasks)
+    
     if field == "modified":
         try:
             # @@@ this seems hackish and brittle but I couldn't work out another way
@@ -424,6 +469,7 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
         except:
             tasks = Task.objects.none() # @@@ or throw 404?
     elif field == "state":
+        task_filter = None # prevent task filtering
         tasks = tasks.filter(state=workflow.REVERSE_STATE_CHOICES[value])
     elif field == "assignee":
         if value == "unassigned": # @@@ this means can't have a username 'unassigned':
@@ -443,8 +489,13 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
         except Tag.DoesNotExist:
             tasks = Task.objects.none() # @@@ or throw 404?
     
+    if task_filter is not None:
+        # Django will not merge queries that are both not distinct or distinct
+        tasks = tasks.distinct() & task_filter.qs
+    
     return render_to_response(template_name, {
         "group": group,
+        "task_filter": task_filter,
         "tasks": tasks,
         "field": field,
         "value": value,
