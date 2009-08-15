@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -13,7 +14,6 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
-
 class Post(models.Model):
     """Post model."""
     STATUS_CHOICES = (
@@ -21,7 +21,7 @@ class Post(models.Model):
         (2, _('Public')),
     )
     title           = models.CharField(_('title'), max_length=200)
-    slug            = models.SlugField(_('slug'))
+    slug            = models.SlugField(_('slug'), blank=True, null=True)
     author          = models.ForeignKey(User, related_name="added_posts")
     creator_ip      = models.IPAddressField(_("IP Address of the Post Creator"), blank=True, null=True)
     body            = models.TextField(_('body'))
@@ -56,6 +56,7 @@ class Post(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         self.updated_at = datetime.now()
+        self.slug = slugify(self.title)
         super(Post, self).save(force_insert, force_update)
 
 # handle notification of new comments
