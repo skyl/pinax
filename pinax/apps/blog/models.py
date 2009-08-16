@@ -20,8 +20,8 @@ class Post(models.Model):
         (1, _('Draft')),
         (2, _('Public')),
     )
-    title           = models.CharField(_('title'), max_length=200)
-    slug            = models.SlugField(_('slug'), blank=True, null=True)
+    title           = models.CharField(_('title'), max_length=255)
+    slug            = models.SlugField(_('slug'), blank=True, null=True, max_length=255)
     author          = models.ForeignKey(User, related_name="added_posts")
     creator_ip      = models.IPAddressField(_("IP Address of the Post Creator"), blank=True, null=True)
     body            = models.TextField(_('body'))
