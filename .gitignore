@@ -5,6 +5,7 @@ Pinax.egg-info/*
 *.egg
 *.swp
 docs/.build
+docs/_build
 docs/external/ajax-validation
 docs/external/announcements
 docs/external/dbtemplates
