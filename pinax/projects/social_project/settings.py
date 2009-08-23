@@ -98,10 +98,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
-
-    "pinax.core.context_processors.contact_email",
-    "pinax.core.context_processors.site_name",
-
+    
+    "pinax.core.context_processors.pinax_settings",
+    
     "notification.context_processors.notification",
     "announcements.context_processors.site_wide_announcements",
     "account.context_processors.openid",
@@ -146,7 +145,6 @@ INSTALLED_APPS = (
     'wiki',
     'swaps',
     'timezones',
-    'app_plugins',
     'voting',
     'voting_extras',
     'tagging',
@@ -215,6 +213,8 @@ LANGUAGES = (
 )
 
 # URCHIN_ID = "ua-..."
+
+YAHOO_MAPS_API_KEY = "..."
 
 class NullStream(object):
     def write(*args, **kwargs):

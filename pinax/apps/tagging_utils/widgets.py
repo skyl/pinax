@@ -5,13 +5,13 @@ from django.core.urlresolvers import reverse
 class TagAutoCompleteInput(forms.TextInput):
     class Media:
         css = {
-            'all': ('css/jquery.autocomplete.css',)
+            'all': ('pinax/css/jquery.autocomplete.css',)
         }
         js = (
-            'jquery-1.3.min.js',
-            'js/jquery.bgiframe.min.js',
-            'js/jquery.ajaxQueue.js',
-            'js/jquery.autocomplete.min.js'
+            'pinax/js/jquery-1.3.2.min.js',
+            'pinax/js/jquery.bgiframe.min.js',
+            'pinax/js/jquery.ajaxQueue.js',
+            'pinax/js/jquery.autocomplete.min.js'
         )
     def __init__(self, app_label, model, *args, **kwargs):
         self.app_label = app_label
@@ -33,10 +33,10 @@ class TagAutoCompleteInput(forms.TextInput):
                 autoFill: true,
             });
             </script>''' % (
-                name, 
+                name,
                 reverse(
-                    'tagging_utils_autocomplete', 
-                    args=[], 
+                    'tagging_utils_autocomplete',
+                    args=[],
                     kwargs={
                         'app_label': self.app_label,
                         'model': self.model

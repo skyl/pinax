@@ -2,9 +2,13 @@
 
 {% load i18n %}
 {% load avatar_tags %}
-{% load app_plugins %}
 {% load uni_form %}
+{% load group_tags %}
 {% load microblogging_tags %}
+{% load blog_tags %}
+{% load tagging_tags %}
+{% load photo_tags %}
+{% load threadedcommentstags %}
 
 {% block head_title %}{% blocktrans %}Profile for {{ other_user }}{% endblocktrans %}{% endblock %}
 
@@ -22,7 +26,7 @@
                 <a href="{% url avatar_change %}" id="avatar_replace">(replace)</a>
                 {% endif %}
             </div>
-
+            
             {% if other_user.get_profile.name %}
                 <h1>{% blocktrans %}Profile for <span class="nickname">{{ other_user }}</span>{% endblocktrans %}</h1>
             {% else %}
@@ -35,7 +39,11 @@
                 {% if other_user.get_profile.location%}<p><b>{% trans "Location" %}</b>: {{ other_user.get_profile.location }}</p>{% endif %}
                 {% if other_user.get_profile.website %}<p><b>{% trans "Website" %}</b>: <a class="url" href="{{ other_user.get_profile.website }}">{{ other_user.get_profile.website }}</a></p>{% endif %}
             </div>
-        
+            
+            {% if is_me %}
+                <p><a href="{% url profile_edit %}">Edit profile</a></p>
+            {% endif %}
+            
             {% if user.is_authenticated %}
                 <p>
                     <a href="{% url tweet_followers other_user %}">{% trans "Followers" %}</a>: {% follower_count other_user %}
@@ -43,19 +51,6 @@
                 </p>
                 
                 {% if is_me %}
-                    <div class="form-toggle">
-                    <p><span id="edit-profile-toggle">{% trans "Edit profile" %}</span></p>
-                    
-                    <form class="uniForm" id="edit-profile" method="POST" action="" style="display: none;">
-                        <fieldset class="inlineLabels">
-                            {{ profile_form|as_uni_form }}
-                            <div class="form_block">
-                            <input type="hidden" name="action" value="update" />
-                            <input type="submit" value="{% trans "update" %}"/>
-                            </div>
-                        </fieldset>
-                    </form>
-                    </div>
                 {% else %}
                     {# @@@ this could be done with ajax, or at the very least turned into an inclusion tag #}
                     <div>
@@ -101,7 +96,7 @@
                             {% else %}
                                 <h2>{% trans "Add As Friend" %}</h2>
                                 <form class="uniForm" method="POST" action="">
-                                    <fieldset class="inlineLabels">  
+                                    <fieldset class="inlineLabels">
                                         {{ invite_form|as_uni_form }}
                                         <div class="form_block">
                                             <input type="hidden" name="action" value="invite" />
@@ -116,8 +111,85 @@
                     
                 {% endif %} {# is me #}
                 
-                {% plugin_point "profiles.profile" user=other_user owner=other_user viewer=user %}
+                <h2>{% trans "Wiki Articles" %}</h2>
                 
+                {% if other_user.article_set.all %}
+                    <table class="bookmarks">
+                        {% for article in other_user.article_set.all %}
+                        <tr class="{% cycle odd,even %}">
+                            <td class="meta">
+                                {{ article.created_at|date }}
+                            </td>
+                            <td>
+                                <h2><a href="{% groupurl wiki_article article.group title=article.title %}">{{ article.title }}</a></h2>
+                                <div class="body">{{ article.content|truncatewords:25 }}</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p>{% trans "No wiki articles yet." %}</p>
+                {% endif %}
+                
+                <h2>{% trans "Bookmarks" %}</h2>
+                
+                {% if other_user.saved_bookmarks.all %}
+                    <table class="bookmarks narrow">
+                        {% for bookmark_instance in other_user.saved_bookmarks.all.select_related %}
+                            <tr class="{% cycle odd,even %} xfolkentry">
+                                <td class="meta">
+                                    {{ bookmark_instance.saved|date }}
+                                    {# add who originally added it and when #}
+                                </td>
+                                <td>
+                                    <h2><a class="taggedlink" href="{{ bookmark_instance.bookmark.url }}">{{ bookmark_instance.description }}</a></h2>
+                                    <div class="url">{% if bookmark_instance.bookmark.get_favicon_url %}<img src="{{ bookmark_instance.bookmark.get_favicon_url }}" height="16" width="16"/> {% endif %}{{ bookmark_instance.bookmark.url }}</div>
+                                    <div class="body description">{{ bookmark_instance.note|linebreaks }}</div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    {% url add_bookmark as add_bookmark_url %}
+                    <p>{% blocktrans %}You haven't added any <a href="{{ add_bookmark_url }}">bookmarks</a> yet.{% endblocktrans %}</p>
+                {% endif %}
+                
+                
+                <h2>{% trans "Blog Posts" %}</h2>
+                
+                {% if other_user.added_posts.all %}
+                    {% for blog_post in other_user.added_posts.all %}
+                        {% show_blog_post blog_post %}
+                    {% endfor %}
+                {% else %}
+                    {% trans "No blog posts yet." %}
+                {% endif %}
+                
+                
+                <h2>{% trans "Tweets" %}</h2>
+                
+                {% if user.is_authenticated and is_me %}
+                    {% sent_tweet_listing user 0 is_me %}
+                {% else %}
+                    {% sent_tweet_listing other_user 0 is_me %}
+                {% endif %}
+                
+                
+                <h2>{% trans "Photos" %}</h2>
+                
+                {% public_photos for other_user as photos %}
+                
+                {% if photos %}
+                    <div class="clearfix">
+                    {% for photo in photos %}
+                        <div class="gallery-photo-thumb">
+                            <a href="/photos/details/{{ photo.id }}/"><img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}"/></a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                   {% trans "No photos uploaded yet." %}
+                {% endif %}
                 
             {% else %} {# not user.is_authenticated #}
                 {% url acct_signup as signup_url %}
@@ -129,19 +201,5 @@
 {% endblock %}
 
 {% block extra_body %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#edit-profile').hide();
-            $('#edit-profile-toggle').click(function() {
-                $('#edit-profile').toggle();
-                $('#edit-profile').autoscroll();
-                return false;
-            });
-            if ($('#edit-profile .errorField').length) {
-                $('#edit-profile').show();
-                $('#edit-profile .errorField').autoscroll();
-            }
-        });
-    </script>
+    <script src="{{ MEDIA_URL }}pinax/js/avatar.js" type="text/javascript"></script>
 {% endblock %}
-

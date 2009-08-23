@@ -22,7 +22,7 @@
         <fieldset class="inlineLabels">
             <div class="form_block">
                 <a href="{% url acct_passwd_reset %}">{% trans "Forgot password?" %}</a>
-            </div>            
+            </div>
             {{ form|as_uni_form }}
             <div class="form_block">
                 <input type="submit" value="{% trans "Log in &raquo;" %}" />
@@ -39,7 +39,7 @@
                     <div class="ctrlHolder error">
                         <p class="errorField">
                             <strong>This field is required.</strong>
-                        </p>       
+                        </p>
                         <label for="id_username">* OpenID Identifier</label>
                         <input class="openid" type="text" name="openid_url" />
                     </div>
@@ -55,7 +55,7 @@
             </fieldset>
         </form>
     {% endif %}
-    <p>{% blocktrans %}If you have any trouble logging in to your account, contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% endblocktrans %}</p>
+    <p>{% blocktrans %}If you have any trouble logging in to your account, contact us at <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.{% endblocktrans %}</p>
 {% endblock %}
 
 {% block extra_body %}

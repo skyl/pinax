@@ -130,7 +130,7 @@ def add_task(request, group_slug=None, secret_id=None, form_class=TaskForm, temp
         paste.expires = datetime.now() + timedelta(seconds=3600*24*30*12*100) # Update the expiration time to maximum
         paste.save()
         paste_link = ugettext('Link to the snippet: http://%(domain)s%(link)s\n\n' % {
-                                'domain': Site.objects.get_current().name,
+                                'domain': Site.objects.get_current().domain,
                                 'link': reverse('snippet_details', kwargs={'snippet_id': paste.secret_id})
                              })
         initial = {
@@ -140,35 +140,19 @@ def add_task(request, group_slug=None, secret_id=None, form_class=TaskForm, temp
     else:
         initial = {}
     
-    search_form = SearchTaskForm()
-    search_results = []
     if request.method == "POST":
-        action = request.POST.get('action', None)
-        if action == 'search':
-            search_form = SearchTaskForm(request.POST)
-            search = request.POST.get('search', None)
-            task_form = form_class(group=group)
-            if search:
-                qset = (
-                    Q(summary__contains=search)|
-                    Q(detail__contains=search)
-                    )
-                search_results = Task.objects.filter(qset).distinct()
-        
-        
-        if request.user.is_authenticated() and not action:
-            task_form = form_class(group, request.POST)
+        if request.user.is_authenticated():
+            task_form = form_class(request.user, group, request.POST)
             if task_form.is_valid():
                 task = task_form.save(commit=False)
                 task.creator = request.user
                 task.group = group
-                # @@@ we should check that assignee is really a member
                 task.save()
                 task.save_history()
                 request.user.message_set.create(message="added task '%s'" % task.summary)
                 if notification:
                     if group:
-                        notify_list = group.member_users.all()
+                        notify_list = group.member_queryset()
                     else:
                         notify_list = User.objects.all() # @@@
                     notify_list = notify_list.exclude(id__exact=request.user.id)
@@ -185,14 +169,12 @@ def add_task(request, group_slug=None, secret_id=None, form_class=TaskForm, temp
                     redirect_to = reverse("task_list")
                 return HttpResponseRedirect(redirect_to)
     else:
-        task_form = form_class(group=group, initial=initial)
+        task_form = form_class(request.user, group, initial=initial)
     
     return render_to_response(template_name, {
         "group": group,
         "is_member": is_member,
         "task_form": task_form,
-        "search_form": search_form,
-        "search_results":search_results,
         "group_base": group_base,
     }, context_instance=RequestContext(request))
 
@@ -262,7 +244,7 @@ def task(request, id, group_slug=None, template_name="tasks/task.html", bridge=N
     task = get_object_or_404(tasks, id=id)
     
     if group:
-        notify_list = group.member_users.all()
+        notify_list = group.member_queryset()
     else:
         notify_list = User.objects.all()
     notify_list = notify_list.exclude(id__exact=request.user.id)
@@ -276,7 +258,7 @@ def task(request, id, group_slug=None, template_name="tasks/task.html", bridge=N
             is_member = True
     
     if is_member and request.method == "POST":
-        form = EditTaskForm(request.user, request.POST, instance=task)
+        form = EditTaskForm(request.user, group, request.POST, instance=task)
         if form.is_valid():
             task = form.save()
             task.save_history(change_owner=request.user)
@@ -298,9 +280,9 @@ def task(request, id, group_slug=None, template_name="tasks/task.html", bridge=N
                 request.user.message_set.create(message="updated tags on the task")
                 if notification:
                     notification.send(notify_list, "tasks_tags", {"user": request.user, "task": task, "group": group})
-            form = EditTaskForm(request.user, instance=task)
+            form = EditTaskForm(request.user, group, instance=task)
     else:
-        form = EditTaskForm(request.user, instance=task)
+        form = EditTaskForm(request.user, group, instance=task)
     
     # The NUDGE dictionary
     nudge = {}
@@ -342,7 +324,7 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
         group = None
     
     if group:
-        other_user = get_object_or_404(group.member_users.all(), username=username)
+        other_user = get_object_or_404(group.member_queryset(), username=username)
         group_base = bridge.group_base_template()
     else:
         other_user = get_object_or_404(User, username=username)
@@ -352,8 +334,11 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
     created_tasks = other_user.created_tasks.all()
     
     if group:
-        assigned_tasks = group.content_objects(assigned_tasks)        
+        assigned_tasks = group.content_objects(assigned_tasks)
         created_tasks = group.content_objects(created_tasks)
+    else:
+        assigned_tasks = assigned_tasks.filter(object_id=None)
+        created_tasks = created_tasks.filter(object_id=None)
     
     # default filtering
     state_keys = dict(workflow.STATE_CHOICES).keys()
@@ -388,18 +373,19 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
     nudged_filter = TaskFilter(filter_data, queryset=nudged_tasks, prefix="n")
     nudged_tasks = nudged_filter.qs
     
-    if group:
-        url = bridge.reverse("tasks_mini_list", group)
-    else:
-        url = reverse("tasks_mini_list")
+    site_url = "http://" + Site.objects.get_current().domain
     
-    bookmarklet = """javascript:(
-            function() {
-                url = '%s';
-                window.open(url, 'tasklist', 'height=500, width=250, title=no, location=no, scrollbars=yes, menubars=no, navigation=no, statusbar=no, directories=no, resizable=yes, status=no, toolbar=no, menuBar=no');
-            }
-        )()""" % url
-
+    if group:
+        url = site_url + bridge.reverse("tasks_mini_list", group)
+    else:
+        url = site_url + reverse("tasks_mini_list")
+    
+    bookmarklet = """javascript:(function() {
+url = '%s';
+window.open(url, 'tasklist', 'height=500, width=250, title=no, location=no,
+scrollbars=yes, menubars=no, navigation=no, statusbar=no, directories=no,
+resizable=yes, status=no, toolbar=no, menuBar=no');})()""" % url
+    
     return render_to_response(template_name, {
         "group": group,
         "assigned_filter": assigned_filter,
@@ -416,8 +402,23 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
 
 @login_required
 def mini_list(request, group_slug=None, template_name="tasks/mini_list.html", bridge=None):
-    assigned_tasks = request.user.assigned_tasks.all().exclude(state="2").exclude(state="3").order_by("state", "-modified") # @@@ filter(project__deleted=False)
+    if bridge:
+        try:
+            group = bridge.get_group(group_slug)
+        except ObjectDoesNotExist:
+            raise Http404
+    else:
+        group = None
+    
+    assigned_tasks = request.user.assigned_tasks.all().exclude(state="2").exclude(state="3").order_by("state", "-modified")
+    
+    if group:
+        assigned_tasks = group.content_objects(assigned_tasks)
+    else:
+        assigned_tasks = assigned_tasks.filter(object_id=None)
+    
     return render_to_response(template_name, {
+        "group": group,
         "assigned_tasks": assigned_tasks,
     }, context_instance=RequestContext(request))
 
@@ -475,7 +476,11 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
             tasks = Task.objects.none() # @@@ or throw 404?
     elif field == "state":
         task_filter = None # prevent task filtering
-        tasks = tasks.filter(state=workflow.REVERSE_STATE_CHOICES[value])
+        try:
+            state = workflow.REVERSE_STATE_CHOICES[value]
+        except KeyError:
+            raise Http404
+        tasks = tasks.filter(state=state)
     elif field == "assignee":
         if value == "unassigned": # @@@ this means can't have a username 'unassigned':
             tasks = tasks.filter(assignee__isnull=True)
@@ -591,4 +596,4 @@ def tasks_history(request, id, group_slug=None, template_name="tasks/task_histor
 
 def export_state_transitions(request):
     export = workflow.export_state_transitions()
-    return HttpResponse(export,mimetype='text/csv')
+    return HttpResponse(export, mimetype='text/csv')
