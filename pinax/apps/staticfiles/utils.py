@@ -2,10 +2,7 @@ import os
 import sys
 from django.conf import settings
 
-SITE_MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT',
-    os.path.join(settings.PROJECT_ROOT, 'site_media'))
-EXTRA_MEDIA = getattr(settings, 'STATICFILES_EXTRA_MEDIA', ())
-MEDIA_DIRNAMES = getattr(settings, 'STATICFILES_MEDIA_DIRNAMES', ['media'])
+from staticfiles.settings import ROOT, DIRS, MEDIA_DIRNAMES
 
 def get_media_path(path, all=False):
     """
@@ -13,14 +10,15 @@ def get_media_path(path, all=False):
     given order and return the absolute file path:
 
     1. The site media path, e.g. for user-contributed files, e.g.:
-        <project>/site_media/<path>
+        <project>/site_media/static/<path>
     2. Any extra media locations given in the settings
     4. Installed apps:
         a) <app>/media/<app>/<path>
         b) <app>/media/<path>
     """
     collection = []
-    for location in [SITE_MEDIA_ROOT] + [root for label, root in EXTRA_MEDIA]:
+    locations = [ROOT] + [root for label, root in DIRS]
+    for location in locations:
         media = os.path.join(location, path)
         if os.path.exists(media):
             if not all:
