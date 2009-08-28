@@ -1023,12 +1023,10 @@ JAUNTY_FIX = """/usr/lib/python2.6/dist-packages
 if sys.platform == 'win32':
     GIT_CMD = 'git.cmd'
     PIP_CMD = 'pip.exe'
-    EASY_INSTALL_CMD = 'easy_install.exe'
     extra = {'shell': True}
 else:
     GIT_CMD = 'git'
     PIP_CMD = 'pip'
-    EASY_INSTALL_CMD = 'easy_install'
     extra = {}
 
 # Bailing if "~/.pydistutils.cfg" exists
@@ -1100,22 +1098,6 @@ def resolve_command(cmd, path=None, pathext=None):
         sys.exit(3)
     return os.path.realpath(cmd)
 
-try:
-    import pip
-except ImportError:
-    pass
-else:
-    from pkg_resources import get_distribution, parse_version
-    version = get_distribution('pip').version
-    if parse_version(version) == parse_version('0.3dev'):
-        print 'ERROR: this script requires pip 0.3.1 or greater.'
-        print 'Since you decided to use a development version of pip, please make sure you are using a recent one.'
-        sys.exit(101)
-    elif parse_version(version) < parse_version('0.3.1'):
-        print 'ERROR: this script requires pip 0.3.1 or greater.'
-        print 'Please upgrade your pip %s to create a Pinax virtualenv.' % version
-        sys.exit(101)
-
 def extend_parser(parser):
     parser.add_option("-s", "--source",
         metavar="DIR_OR_URL", dest="pinax_source", default=PINAX_GIT_LOCATION,
@@ -1149,10 +1131,11 @@ def adjust_options(options, args):
     if not args:
         return # caller will raise error
 
-def install_base(easy_install, requirements_dir, packages):
+def install_base(python, parent_dir, requirements_dir, packages):
     """
-    Installs pip from the bundled tarball if existing
+    Installs base packages from the bundled tarball if existing
     """
+    pip = os.path.realpath(join(parent_dir, 'scripts', 'pip.py'))
     for pkg in packages:
         version, filename = packages[pkg]
         src = join(requirements_dir, 'base', filename)
@@ -1164,10 +1147,12 @@ def install_base(easy_install, requirements_dir, packages):
         for mirror in PINAX_PYPI_MIRRORS:
             find_links.extend(['--find-links', mirror])
         call_subprocess([
-            easy_install,
+            python,
+            pip,
+            'install',
             '--quiet',
-            '--always-copy',
-            '--always-unzip',
+            '--no-deps',
+            '--ignore-installed',
         ] + find_links + [
             src,
         ], filter_stdout=filter_lines, show_stdout=False)
@@ -1179,13 +1164,11 @@ def after_install(options, home_dir):
     parent_dir = join(this_dir, '..')
 
     python = resolve_command(expected_exe, bin_dir)
-    easy_install = resolve_command(EASY_INSTALL_CMD, bin_dir)
 
-    # pip and setuptools-git is required in any case
     requirements_dir = join(parent_dir, 'requirements')
-    install_base(easy_install, requirements_dir, PINAX_MUST_HAVES)
+    install_base(python, parent_dir, requirements_dir, PINAX_MUST_HAVES)
 
-    # resolve path to pip
+    # resolve path to the freshly installed pip
     pip = resolve_command(PIP_CMD, bin_dir)
 
     version_file = join(parent_dir, 'VERSION')
@@ -1207,7 +1190,7 @@ def after_install(options, home_dir):
 
     if options.development:
         logger.notify('Going to setup a Pinax development environment.')
-        # For developers and other crazy trunk lovers
+        # For developers and other crazy HEAD lovers
         source = options.pinax_source
         if os.path.exists(source):
             # A directory was given as a source for bootstrapping
@@ -1250,6 +1233,7 @@ def after_install(options, home_dir):
             call_subprocess([
                 pip,
                 'install',
+                '--no-deps',
                 '--ignore-installed',
                 '--environment', home_dir,
                 '--requirement', requirements_file,
