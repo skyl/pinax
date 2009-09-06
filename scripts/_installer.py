@@ -1,6 +1,5 @@
 import os
 import sys
-import re
 import urllib
 
 PINAX_GIT_LOCATION = 'git://github.com/pinax/pinax.git'
@@ -38,19 +37,17 @@ if os.path.exists(pydistutils):
     print "your %s file." % pydistutils
     sys.exit(3)
 
-_drive_re = re.compile('^([a-z]):', re.I)
-
 def filename_to_url(filename):
     """
     Convert a path to a file: URL.  The path will be made absolute.
     """
     filename = os.path.normcase(os.path.abspath(filename))
-    if _drive_re.match(filename):
-        filename = filename[0] + '|' + filename[2:]
-    url = urllib.quote(filename)
-    url = url.replace(os.path.sep, '/')
-    url = url.lstrip('/')
-    return 'file:///' + url
+    drive, filename = os.path.splitdrive(filename)
+    filepath = filename.split(os.path.sep)
+    url = '/'.join([urllib.quote(part) for part in filepath])
+    if not drive:
+        url = url.lstrip('/')
+    return 'file:///' + drive + url
 
 def winpath(path):
     if sys.platform == 'win32':
@@ -251,6 +248,7 @@ def after_install(options, home_dir):
                 pip,
                 'install',
                 '--no-deps',
+                '--no-index',
                 '--ignore-installed',
                 '--environment', home_dir,
                 '--requirement', requirements_file,
@@ -258,13 +256,15 @@ def after_install(options, home_dir):
             ], show_stdout=True)
         finally:
             logger.indent -= 2
-        logger.notify("Please activate the newly created virtualenv by running in '%s': "
-                      % home_dir)
+        env_dir = os.path.normpath(home_dir)
+        logger.notify("Please activate the newly created virtualenv by running: ")
         logger.indent += 2
-        logger.notify("'source bin/activate' on Linux/Unix/Mac OS "
-                      "or '.\\Scripts\\activate.bat' on Windows")
+        if sys.platform == "win32":
+            logger.notify("%s\\Scripts\\activate.bat" % env_dir)
+        else:
+            logger.notify("source %s/bin/activate" % env_dir)
         logger.indent -= 2
-        logger.notify('Pinax environment created successfully.')
+        logger.notify("Pinax environment created successfully.")
     else:
         logger.notify("Cannot locate a VERSION file for release. You are "
             "likely not running from a release tarball. Perhaps you meant to "
