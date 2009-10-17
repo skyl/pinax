@@ -3,6 +3,7 @@
 {% load uni_form %}
 {% load pagination_tags %}
 {% load avatar_tags %}
+{% load markup_tags %}
 
 {% get_threaded_comment_tree for object as responses %}
 {% autopaginate responses %}
@@ -16,7 +17,7 @@
                 {{ response.date_submitted|date }}
             </div>
             <div class="bulk">
-                <div class="body">{{ response.comment|urlize|linebreaks }}</div>
+                <div class="body">{{ response.comment|apply_markup:'restructuredtext' }}</div>
                 {% ifequal user response.user %}
                 <form method="POST" action="{% url tc_comment_delete response.id %}">
                     <input type="submit" value="{% trans "Delete Post" %}" />

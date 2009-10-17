@@ -1,13 +1,13 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
-
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from projects.models import Project, ProjectMember
 
-try:
-    import notification
-except:
+if "notification" in settings.INSTALLED_APPS:
+    from notification import models as notification
+else:
     notification = None
 
 # @@@ we should have auto slugs, even if suggested and overrideable
