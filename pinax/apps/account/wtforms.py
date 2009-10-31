@@ -162,6 +162,12 @@ class OpenIDSignupForm(forms.Form):
         kwargs.pop("reserved_usernames", [])
         kwargs.pop("no_duplicate_emails", False)
         
+        # Remember provided (validated!) OpenID to attach it to the new user later.
+        self.openid = kwargs.pop("openid")
+        # TODO: do something with this?
+
+        reserved_usernames = kwargs.pop("reserved_usernames", None)
+        no_duplicate_emails = kwargs.pop("no_duplicate_emails", None)
         super(OpenIDSignupForm, self).__init__(*args, **kwargs)
     
     def clean_username(self):

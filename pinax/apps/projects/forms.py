@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from projects.models import Project, ProjectMember
 
-
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
@@ -75,7 +74,9 @@ class AddUserForm(forms.Form):
         project_member = ProjectMember(project=self.project, user=new_member)
         project_member.save()
         self.project.members.add(project_member)
+        ''' FIXME - where is this notification coming from?
         if notification:
             notification.send(self.project.member_users.all(), "projects_new_member", {"new_member": new_member, "project": self.project})
             notification.send([new_member], "projects_added_as_member", {"adder": user, "project": self.project})
+        '''
         user.message_set.create(message="added %s to project" % new_member)
