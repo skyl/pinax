@@ -17,6 +17,10 @@ TEMPLATE_DEBUG = DEBUG
 # tells Pinax to serve media through django.views.static.serve.
 SERVE_MEDIA = DEBUG
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -94,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'pinax.middleware.security.HideSensistiveFieldsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'private_beta_project.urls'
@@ -137,10 +142,11 @@ INSTALLED_APPS = (
     'timezones',
     'ajax_validation',
     'uni_form',
+    'staticfiles',
+    'debug_toolbar',
     
     # internal (for now)
     'basic_profiles',
-    'staticfiles',
     'account',
     'waitinglist',
     'signup_codes',

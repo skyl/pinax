@@ -22,6 +22,8 @@ site different.
    groups
    settings
    dependencies
+   FAQ <faq>
+   Contributing <contributing>
 
 Release Notes
 -------------
