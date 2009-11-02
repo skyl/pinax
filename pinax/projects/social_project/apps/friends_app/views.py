@@ -25,22 +25,19 @@ def friends(request, template_name="friends_app/invitations.html"):
                     request.user.message_set.create(message=_("Accepted friendship request from %(from_user)s") % {'from_user': invitation.from_user})
             except FriendshipInvitation.DoesNotExist:
                 pass
-            join_request_form = form_class()
-        elif request.POST["action"] == "invite": # invite to join
-            join_request_form = form_class(request.POST)
-            if join_request_form.is_valid():
-                join_request_form.save(request.user)
-                join_request_form = form_class() # @@@
+        elif request.POST["action"] == "decline":
+            try:
+                invitation = FriendshipInvitation.objects.get(id=invitation_id)
+                if invitation.to_user == request.user:
+                    invitation.decline()
+                    request.user.message_set.create(message=_("Declined friendship request from %(from_user)s") % {'from_user': invitation.from_user})
+            except FriendshipInvitation.DoesNotExist:
+                pass
 
-
-            join_request_form = form_class()
-    else:
-        join_request_form = form_class()
-    
     invites_received = request.user.invitations_to.invitations().order_by("-sent")
     invites_sent = request.user.invitations_from.invitations().order_by("-sent")
     joins_sent = request.user.join_from.all().order_by("-sent")
-    
+
     return render_to_response(template_name, {
         "invites_received": invites_received,
         "invites_sent": invites_sent,

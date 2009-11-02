@@ -17,29 +17,29 @@ class BasePostFeed(Feed):
             Site.objects.get_current().domain,
             post.get_absolute_url(),
         )
-    
+
     def item_title(self, post):
         return post.title
-    
+
     def item_updated(self, post):
         return post.updated_at
-    
+
     def item_published(self, post):
         return post.created_at
-    
+
     def item_content(self, post):
         return {"type" : "html", }, linebreaks(escape(post.body))
-    
+
     def item_links(self, post):
         return [{"href" : self.item_id(post)}]
-    
+
     def item_authors(self, post):
         return [{"name" : post.author.username}]
 
 class BlogFeedAll(BasePostFeed):
     def feed_id(self):
         return 'http://%s/feeds/posts/all/' % Site.objects.get_current().domain
-    
+
     def feed_title(self):
         return 'Blog post feed for all users'
 
@@ -66,7 +66,7 @@ class BlogFeedAll(BasePostFeed):
 class BlogFeedUser(BasePostFeed):
     def get_object(self, params):
         return get_object_or_404(User, username=params[0].lower())
-    
+
     def feed_id(self, user):
         return 'http://%s/feeds/posts/only/%s/' % (
             Site.objects.get_current().domain,
