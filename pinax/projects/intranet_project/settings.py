@@ -125,6 +125,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     # included
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -140,6 +141,7 @@ INSTALLED_APPS = (
     'mailer',
     'announcements',
     'pagination',
+    'groups',
     'timezones',
     'ajax_validation',
     'bookmarks',
@@ -158,15 +160,12 @@ INSTALLED_APPS = (
     'basic_profiles',
     'account',
     'signup_codes',
-    'groups',
     'topics',
     'tagging_utils',
     'threadedcomments_extras',
     'tasks',
     
     'tag_app',
-    
-    'django.contrib.admin',
 
 )
 

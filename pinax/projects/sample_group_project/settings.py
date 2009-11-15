@@ -125,6 +125,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     # included
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -139,6 +140,7 @@ INSTALLED_APPS = (
     'mailer',
     'announcements',
     'pagination',
+    'groups',
     'timezones',
     'ajax_validation',
     'tagging',
@@ -164,7 +166,6 @@ INSTALLED_APPS = (
     'tag_app',
     'tagging_utils',
     'threadedcomments_extras',
-    'groups',
     
     'topics',
     'tasks',
@@ -173,8 +174,6 @@ INSTALLED_APPS = (
     'basic_groups',
     
     'about',
-    
-    'django.contrib.admin',
 )
 
 ABSOLUTE_URL_OVERRIDES = {

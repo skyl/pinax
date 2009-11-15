@@ -125,13 +125,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     # included
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.markup',
-    'django.contrib.admin',
     'pinax.templatetags',
     
     # external
@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     'mailer',
     'announcements',
     'pagination',
+    'groups',
     'timezones',
     'avatar',
     'threadedcomments',
@@ -163,7 +164,6 @@ INSTALLED_APPS = (
     'tag_app',
     'tagging_utils',
     'threadedcomments_extras',
-    'groups',
     'projects',
     'tasks',
     'topics',
