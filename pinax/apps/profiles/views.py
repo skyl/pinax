@@ -13,7 +13,6 @@ from django.utils.translation import ugettext
 from friends.forms import InviteFriendForm
 from friends.models import FriendshipInvitation, Friendship
 
-from microblogging.models import Following
 
 from profiles.models import Profile
 from profiles.forms import ProfileForm
@@ -26,6 +25,20 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
+if "microblogging" in settings.INSTALLED_APPS:
+    from microblogging.models import Following
+    profile_template = 'profiles/profile.html'
+else:
+    Following=None
+    profile_template = 'profiles/profile_no_tweets.html'
+
+if "projects" in settings.INSTALLED_APPS and not "tribes" in settings.INSTALLED_APPS:
+    projects = True
+    tribes = False
+
+else:
+    tribes=True
+    projects = False
 
 def profiles(request, template_name="profiles/profiles.html", extra_context=None):
     if extra_context is None:
@@ -48,7 +61,7 @@ def profiles(request, template_name="profiles/profiles.html", extra_context=None
     }, **extra_context), context_instance=RequestContext(request))
 
 
-def profile(request, username, template_name="profiles/profile.html", extra_context=None):
+def profile(request, username, template_name=profile_template, extra_context=None):
     
     if extra_context is None:
         extra_context = {}
@@ -57,7 +70,12 @@ def profile(request, username, template_name="profiles/profile.html", extra_cont
     
     if request.user.is_authenticated():
         is_friend = Friendship.objects.are_friends(request.user, other_user)
-        is_following = Following.objects.is_following(request.user, other_user)
+        if Following:
+            is_following = Following.objects.is_following(request.user, other_user)
+
+        else:
+            is_following = False
+
         other_friends = Friendship.objects.friends_for_user(other_user)
         if request.user == other_user:
             is_me = True
@@ -120,8 +138,8 @@ def profile(request, username, template_name="profiles/profile.html", extra_cont
                 'message': ugettext("Let's be friends!"),
             })
     
-    previous_invitations_to = FriendshipInvitation.objects.invitations(to_user=other_user, from_user=request.user)
-    previous_invitations_from = FriendshipInvitation.objects.invitations(to_user=request.user, from_user=other_user)
+    previous_invitations_to = FriendshipInvitation.objects.filter(to_user=other_user, from_user=request.user)
+    previous_invitations_from = FriendshipInvitation.objects.filter(to_user=request.user, from_user=other_user)
     
     return render_to_response(template_name, dict({
         "is_me": is_me,
@@ -132,6 +150,8 @@ def profile(request, username, template_name="profiles/profile.html", extra_cont
         "invite_form": invite_form,
         "previous_invitations_to": previous_invitations_to,
         "previous_invitations_from": previous_invitations_from,
+        "tribes":tribes,
+        "projects":projects,
     }, **extra_context), context_instance=RequestContext(request))
 
 

@@ -3,6 +3,7 @@ dev*.db
 local_settings.py
 Pinax.egg-info/*
 *.egg
+*.swp
 docs/.build
 docs/_build
 docs/external/ajax-validation
@@ -21,3 +22,4 @@ docs/external/threadedcomments
 docs/external/timezones
 covhtml
 .coverage
+pip-log.txt
