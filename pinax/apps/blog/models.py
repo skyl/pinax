@@ -16,6 +16,7 @@ else:
 
 MARKUP_CHOICES = getattr(settings, "MARKUP_CHOICES", [])
 
+
 class Post(models.Model):
     """Post model."""
     STATUS_CHOICES = (
@@ -37,7 +38,7 @@ class Post(models.Model):
                               choices=MARKUP_CHOICES,
                               null=True, blank=True)
     tags            = TagField()
-    
+
     class Meta:
         verbose_name        = _('post')
         verbose_name_plural = _('posts')

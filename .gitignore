@@ -20,4 +20,6 @@ docs/external/repos/
 docs/external/robots
 docs/external/threadedcomments
 docs/external/timezones
+covhtml
+.coverage
 pip-log.txt
