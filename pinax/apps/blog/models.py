@@ -14,13 +14,9 @@ if "notification" in settings.INSTALLED_APPS:
 else:
     notification = None
 
-<<<<<<< HEAD:pinax/apps/blog/models.py
-
 MARKUP_CHOICES = getattr(settings, "MARKUP_CHOICES", [])
 
 
-=======
->>>>>>> f893e611a0632865e296d964f307833de34f24e2:pinax/apps/blog/models.py
 class Post(models.Model):
     """Post model."""
     STATUS_CHOICES = (
@@ -42,7 +38,7 @@ class Post(models.Model):
                               choices=MARKUP_CHOICES,
                               null=True, blank=True)
     tags            = TagField()
-    
+
     class Meta:
         verbose_name        = _('post')
         verbose_name_plural = _('posts')
