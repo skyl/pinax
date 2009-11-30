@@ -15,7 +15,7 @@ django-atomformat==0.1.1dev
 creole==1.0.1
 
 django-notification==0.1.4
-django-openid==0.2.0
+django-openid==0.2.1
 django-email-confirmation==0.1.4
 django-mailer==0.1.0
 django-announcements==0.1.0
@@ -27,10 +27,10 @@ django-uni-form==0.6.0
 django-wikiapp==0.2.0
 django-tagging==0.3
 django-avatar==1.0.3
-django-threadedcomments==0.5.1
+django-threadedcomments==0.5.2
 django-gravatar==0.1.0
 django-sorting>=0.1
-django-filter==0.5.1
+django-filter==0.5.2
 template_utils==0.4p2
 django-staticfiles==0.1.2
 django-groups>=0.1-dev1
