@@ -12,7 +12,7 @@ django-notification==0.1.4
 django-pagination==1.0.5.1
 django-robots==0.6.1
 django-messages==0.4.2
-django-threadedcomments==0.5.1
+django-threadedcomments==0.5.2
 django-extensions==0.4.1
 django-uni-form==0.6.0
 django-timezones==0.1.4
@@ -33,7 +33,7 @@ django-wikiapp==0.2.0
 sorl==3.1
 django-generic-flatblocks==0.3.0
 django-frontendadmin==0.4
-django-filter==0.5.1
+django-filter==0.5.2
 django-photologue==2.3
 django-tagging==0.3
 django-staticfiles==0.1.2
