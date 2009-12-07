@@ -46,5 +46,9 @@ django-sorting>=0.1
 template_utils==0.4p2
 django-groups>=0.1-dev1
 
+# skyl-written
 django-listings==0.1
 django-events==0.1
+
+# skyl added
+ipython
