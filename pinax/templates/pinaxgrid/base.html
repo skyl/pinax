@@ -42,7 +42,7 @@
             </div>
         {% endif %}
         
-        <div id="tabhead">
+        <div id="masthead">
             <div class="logo" dir="ltr">{% block logo_link_image %}{% endblock %}</div>
             <div class="login">{% block login %}{% endblock %}{% block locale_switcher %}{% endblock %}<div style="text-align: right;"></div></div>
             <div id="left_tabs" >{% block left_tabs %}{% endblock %}</div>
@@ -51,7 +51,7 @@
         <div id="subnav" class="clearfix">{% block subnav_base %}<div class="clearfix">{% block subnav %}&nbsp;{% endblock %}</div>{% endblock %}</div>
         
         {% block body_outer %}
-        <div id="body">
+        <div id="content">
             {% if messages %}
                 <ul id="messages">
                     {% for message in messages %}
