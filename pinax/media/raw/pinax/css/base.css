@@ -1,0 +1,100 @@
+/* GENERAL */
+html, body {
+}
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+a, a:visited {
+}
+img {
+}
+dt {
+}
+table {
+}
+td {
+}
+h1 {
+}
+
+/* CLEARS */
+.clearboth {
+    clear: both;
+}
+/* reference:
+ *   http://www.positioniseverything.net/easyclearing.html
+ *   http://www.zeldman.com/2006/10/27/ie7fixes1/
+ *      comment by michael on 10/28/2006
+ */
+.clearfix {
+    min-height: 1%;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+/* hides from ie5-mac \*/
+* html .clearfix { height: 1%; }
+/* end hide from ie5-mac */
+
+/* DIVS in base.html */
+div#site_wide_announcements {
+}
+div#subnav {
+}
+div#body {
+}
+div#footer {
+}
+
+/* HEADER */
+#tabhead {
+}
+#tabhead #left_tabs {
+}
+#tabhead #right_tabs {
+}
+#tabhead .logo {
+}
+#tabhead .logo img {
+}
+#tabhead .login {
+}
+#tabhead .login a, #tabhead .login a:visited {
+}
+#tabhead .login a:hover {
+}
+#tabhead form#locale_switcher {
+    display: inline;
+}
+
+/* MESSAGES */
+ul#messages {
+}
+ul#messages li {
+}
+ul#messages li a {
+}
+ul#messages .debug {
+}
+ul#messages .info {
+}
+ul#messages .success {
+}
+ul#messages .warning {
+}
+ul#messages .error {
+}
+
+/* SUBNAV */
+#subnav ul {
+}
+#subnav ul li {
+}
+#subnav ul a:link, #subnav ul a:visited {
+}
+#subnav ul a:hover {
+}
