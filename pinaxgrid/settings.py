@@ -287,3 +287,7 @@ try:
     from local_settings import *
 except ImportError:
     pass
+
+from IPython.Shell import IPShellEmbed
+ipython = IPShellEmbed()
+#ipython()
