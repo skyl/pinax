@@ -1,0 +1,271 @@
+.. _ref-themes:
+
+Themes
+======
+
+A theme is a group of static media and templates that work together.
+Currently there is only one theme in pinax, 'default'.
+In your project, the theme is set via the :ref:`PINAX_THEME <settings-pinax-theme>` setting.
+
+Static media for a pinax theme exist in ``pinax/media/<theme_name>/``.
+Templates for a pinax theme exist in ``pinax/templates/<theme_name>/``.
+
+The ``clone_project`` command adds settings such that
+media will be found first in the ``youproject/media`` directory,
+whether using runserver and the staticfiles view or using the 
+``build_static`` management command to gather all of the static media.
+If not found under your project, ``pinax/media/<theme_name>/`` dir is tried
+thanks to the staticfiles app and the ``STATIC_DIRS`` setting::
+
+    STATICFILES_DIRS = [
+        os.path.join(PROJECT_ROOT, "media"),
+        os.path.join(PINAX_ROOT, "media", PINAX_THEME),
+    ]
+
+Likewise, templates will be found if they exist in ``yourproject/templates`` or they 
+will fallback to the rational defaults::
+
+    TEMPLATE_DIRS = [
+        os.path.join(PROJECT_ROOT, "templates"),
+        os.path.join(PINAX_ROOT, "templates", PINAX_THEME),
+    ] # and then finally to the app/template dirs by default
+
+Thus, you can use a theme but override as much as you need to.
+
+.. _ref-template-inheritance:
+
+Template inheritance
+--------------------
+
+Typical inheritance for a response rendering in pinax is like that of the 
+bookmarks list for example::
+
+    base.html --> site_base.html --> bookmarks/base.html --> bookmarks/add.html
+
+The only template that is required of your project is ``site_base.html`` which is
+automatically put in place by :ref:`clone_project <customization-cloneproject>`.
+``base.html``, ``bookmarks/base.html``, and ``bookmarks/add.html`` are supplied by the theme
+but may be overridden by placing them in ``yourproject/templates``.
+
+.. _ref-default-templates:
+
+Default Templates
+-----------------
+
+This is the catalog of templates introduced by the default Pinax theme.
+We shall endeavor to list the css, javascript and images used by each template,
+the blocks that the template establishes or overrides,
+and the css selectors that are present on the page.
+
+../pinax/templates/default/404.html
+../pinax/templates/default/500.html
+../pinax/templates/default/base.html
+../pinax/templates/default/facebox_js.html
+
+../pinax/templates/default/about:
+about.html
+dmca.html
+privacy.html
+terms.html
+
+../pinax/templates/default/account:
+base.html
+email.html
+language_change.html
+login.html
+logout.html
+password_change.html
+password_delete_done.html
+password_delete.html
+password_reset_done.html
+password_reset_from_key.html
+password_reset.html
+password_reset_key_message.txt
+password_reset_message.txt
+password_set.html
+signup.html
+timezone_change.html
+verification_sent.html
+
+../pinax/templates/default/announcements:
+announcement_detail.html
+announcement_list.html
+
+../pinax/templates/default/avatar:
+change.html
+confirm_delete.html
+
+../pinax/templates/default/basic_profiles:
+base.html
+profile_edit_facebox.html
+profile_edit.html
+profile_form.html
+profile.html
+profile_right_panel.html
+profiles.html
+
+../pinax/templates/default/blog:
+base.html
+blog_item.html
+blogs.html
+edit.html
+friends_posts.html
+new.html
+post.html
+your_posts.html
+
+../pinax/templates/default/bookmarks:
+add.html
+base.html
+bookmarks.html
+friends_bookmarks.html
+your_bookmarks.html
+
+../pinax/templates/default/django_openid:
+already_logged_in.html
+associate.html
+associations.html
+register.html
+registration_closed.html
+
+../pinax/templates/default/emailconfirmation:
+confirm_email.html
+
+../pinax/templates/default/friends:
+join_invite_message.txt
+join_invite_subject.txt
+
+../pinax/templates/default/gblocks:
+image
+text
+title
+titleandtext
+titletextandimage
+
+../pinax/templates/default/locations:
+base.html
+checkin.html
+friends_checkins.html
+location.html
+nearby_checkins.html
+new.html
+your_locations.html
+
+../pinax/templates/default/messages:
+base.html
+compose.html
+inbox.html
+new_messages.html
+notification
+outbox.html
+trash.html
+view.html
+
+../pinax/templates/default/microblogging:
+base.html
+followers.html
+following.html
+friends_tweets.html
+listing.html
+personal.html
+public.html
+single.html
+
+../pinax/templates/default/notification:
+base.html
+notices.html
+
+../pinax/templates/default/photos:
+base.html
+details.html
+edit.html
+friends_photos.html
+latest.html
+memberphotos.html
+photo_right_panel.html
+upload.html
+yourphotos.html
+
+../pinax/templates/default/profiles:
+base.html
+profile_edit_facebox.html
+profile_edit.html
+profile_form.html
+profile.html
+profile_right_panel.html
+profiles.html
+
+../pinax/templates/default/projects:
+base.html
+content_base.html
+create.html
+project.html
+project_item.html
+projects.html
+your_projects.html
+
+../pinax/templates/default/signup_codes:
+admin_invite_user.html
+failure.html
+invite_user.txt
+
+../pinax/templates/default/swaps:
+accepted.html
+base.html
+dead.html
+edit_offer.html
+new_offer.html
+notification
+offer.html
+offers.html
+proposed_by_you.html
+proposed_to_you.html
+propose_swap.html
+swap.html
+your_offers.html
+
+../pinax/templates/default/tasks:
+add.html
+base.html
+focus.html
+mini_list.html
+task_history.html
+task.html
+task_item.html
+task_list_detail.html
+task_list.html
+tasks_history_list.html
+user_tasks.html
+
+../pinax/templates/default/threadedcomments:
+comments.html
+
+../pinax/templates/default/topics:
+base.html
+topic.html
+topic_item.html
+topics.html
+
+../pinax/templates/default/tribes:
+base.html
+content_base.html
+create.html
+tribe.html
+tribe_item.html
+tribes.html
+your_tribes.html
+
+../pinax/templates/default/waitinglist:
+list_signup.html
+success.html
+
+../pinax/templates/default/wiki:
+article_content.html
+article_teaser.html
+base.html
+changeset.html
+edit.html
+history.html
+index.html
+searchbox.html
+view.html
