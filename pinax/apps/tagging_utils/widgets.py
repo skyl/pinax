@@ -1,8 +1,8 @@
+from django import template
 from django import forms
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
-
 
 
 class TagAutoCompleteInput(forms.TextInput):
@@ -26,17 +26,24 @@ class TagAutoCompleteInput(forms.TextInput):
     def render(self, name, value, attrs=None):
         output = super(TagAutoCompleteInput, self).render(name, value, attrs)
         
-        return output + mark_safe(u"""<script type="text/javascript">
-            jQuery("#id_%s").autocomplete("%s", {
-                max: 10,
-                highlight: false,
-                multiple: true,
-                multipleSeparator: " ",
-                scroll: true,
-                scrollHeight: 300,
-                matchContains: true,
-                autoFill: true
-            });
+        return output + mark_safe(u"""
+            <script type="text/javascript">
+                jQuery("#id_%s").autocomplete("%s", {
+                    max: 10,
+                    highlight: false,
+                    multiple: true,
+                    multipleSeparator: " ",
+                    scroll: true,
+                    scrollHeight: 300,
+                    matchContains: true,
+                    autoFill: true,
+                    formatItem: function(data, i, n, value){
+                        return data[0]+" "+data[2];
+                    },
+                    formatResult: function(data, value){
+                        return value;
+                    }
+                });
             </script>""" % (
                 name,
                 reverse("tagging_utils_autocomplete", kwargs={
