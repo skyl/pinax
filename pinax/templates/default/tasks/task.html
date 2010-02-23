@@ -89,4 +89,11 @@
     });
 
 </script>
+
+    {% load tagging_utils_tags %}
+    {% tag_autocomplete_js %} {# site-wide tags and counts #}
+    {% comment %}
+    {% tag_autocomplete_js "blog post all" %}  {# tags for model, site-wide count #}
+    {% tag_autocomplete_js "blog post model" %} {# tags for model, count for model #}
+    {% endcomment %}
 {% endblock %}
