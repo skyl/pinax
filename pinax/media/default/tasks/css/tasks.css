@@ -14,6 +14,24 @@ form.add-attachment p{
     background-color: #DDD;
 }
 
+tr.task_new {
+    color: green;
+}
+tr.task_accepted{
+    color: purple;
+}
+tr.task_in-progress{
+    color: blue;
+}
+
+tr.task_discussion-needed {
+    color: orange;
+}
+
+tr.task_blocked {
+    color: red;
+}
+
 tr.task_resolved td, tr.task_closed td {
     text-decoration: line-through;
 }
