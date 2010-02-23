@@ -8,7 +8,10 @@
 {% block body %}
     <h1>{% trans "Language" %}</h1>
     
-    <p>{% trans "Pinax can be used in your preferred language." %}</p>
+    <p>{% blocktrans %}
+    {{ SITE_NAME }} can be used in your preferred language.
+    {% endblocktrans %}
+    </p>
     
     <form method="POST" action="" class="uniForm">
         {% csrf_token %}

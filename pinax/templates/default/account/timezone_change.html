@@ -8,7 +8,11 @@
 {% block body %}
     <h1>{% trans "Timezone" %}</h1>
     
-    <p>{% trans "Pinax can localize all times into your preferred timezone. Change your timezone below." %}</p>
+    <p>{% blocktrans %}
+    {{ SITE_NAME }} can localize all times into your preferred timezone. Change your timezone below."
+    {% endblocktrans %}
+    </p>
+
     
     <form method="POST" action="" class="uniForm">
         {% csrf_token %}
