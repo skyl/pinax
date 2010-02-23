@@ -25,7 +25,8 @@
 {% block extra_body %}
     <script src="{{ STATIC_URL }}tagging_utils/js/jquery.autocomplete.js" type="text/javascript"></script>
     {% load tagging_utils_tags %}
-    {% tag_autocomplete_js "blog post all" %}
+    {% tag_autocomplete_js %}
+    {# for some reason {% tag_autocomplete_js "bookmarks bookmark model" %} is no good #}
 {% endblock %}
 
 

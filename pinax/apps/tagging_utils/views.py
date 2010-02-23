@@ -57,5 +57,4 @@ def autocomplete(request, app_label=None, model=None):
             )
     else:
         tag_list = "\n".join([tag.name for tag in tags if tag])
-    
     return HttpResponse(tag_list)
