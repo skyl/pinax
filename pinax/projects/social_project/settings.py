@@ -199,6 +199,7 @@ INSTALLED_APPS = [
     "photos",
     "tag_app",
     "topics",
+    "tagging_utils",
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
