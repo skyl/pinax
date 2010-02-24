@@ -184,7 +184,7 @@ PINAX_THEME
 
 With Pinax your site can have multiple themes available. This option now
 determines, which one of these should be used. In practice the value of
-``PINAX_THEME`` becomes part of the file-paths the ``build_media`` command is
+``PINAX_THEME`` becomes part of the file-paths the ``build_static`` command is
 looking for when trying to combine all your media files into one single
 location. A small example::
     
