@@ -30,4 +30,11 @@
             $('#blog_form').validate('{% url blog_form_validate %}', {type: 'table'});
         });
     </script>
+    <script src="{{ STATIC_URL }}tagging_utils/js/jquery.autocomplete.js" type="text/javascript"></script>
+    {% load tagging_utils_tags %}
+    {% tag_autocomplete_js "blog post all" %}
+    <script src="{{ STATIC_URL }}tagging_utils/js/jquery.autocomplete.js" type="text/javascript"></script>
+    {% load tagging_utils_tags %}
+    {% tag_autocomplete_js "blog post all" %}
+
 {% endblock %}
