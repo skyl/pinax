@@ -1,6 +1,6 @@
 /* GENERAL TAB STYLING */
 
-#center_tabs {
+#right_tabs {  /* shhh... really it's center */
     position: absolute;
     top: 1px;
     margin: 0 auto;
