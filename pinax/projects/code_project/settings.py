@@ -183,7 +183,6 @@ INSTALLED_APPS = [
     "account",
     "signup_codes",
     "about",
-    "tagging_utils",
     "threadedcomments_extras",
     "projects",
     "tasks",

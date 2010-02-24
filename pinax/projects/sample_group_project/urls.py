@@ -32,7 +32,7 @@ urlpatterns = patterns("",
     (r"^profiles/", include("basic_profiles.urls")),
     (r"^notices/", include("notification.urls")),
     (r"^announcements/", include("announcements.urls")),
-    (r"^tagging_utils/", include("tagging_utils.urls")),
+    (r"^tagging_ext/", include("tagging_ext.urls")),
     (r"^comments/", include("threadedcomments.urls")),
     (r"^attachments/", include("attachments.urls")),
     

@@ -47,11 +47,11 @@ projects
 signup_codes
     uses account
 
-tagging_utils
+tagging_ext
     uses tagging
 
 tasks
-    uses attachments, dpaste, notification, tagging, tagging_utils, threadedcomments,
+    uses attachments, dpaste, notification, tagging, tagging_ext, threadedcomments,
     and library atomformat
 
 threadedcomments_extras

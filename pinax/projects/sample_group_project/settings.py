@@ -186,7 +186,6 @@ INSTALLED_APPS = [
     "basic_profiles",
     "account",
     "signup_codes",
-    "tagging_utils",
     "threadedcomments_extras",
     
     "topics",

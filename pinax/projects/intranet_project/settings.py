@@ -183,7 +183,6 @@ INSTALLED_APPS = [
     "account",
     "signup_codes",
     "topics",
-    "tagging_utils",
     "threadedcomments_extras",
     "tasks",
     
