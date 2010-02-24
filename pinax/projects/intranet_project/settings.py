@@ -56,6 +56,19 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+ugettext = lambda s: s
+LANGUAGES = (
+    ('en', u'English'),
+    ('de', u'Deutsch'),
+    ('es', u'Español'),
+    ('fr', u'Français'),
+    ('sv', u'Svenska'),
+    ('pt-br', u'Português brasileiro'),
+    ('he', u'עברית'),
+    ('ar', u'العربية'),
+    ('it', u'Italiano'),
+)
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "site_media", "media")
@@ -83,7 +96,7 @@ STATICFILES_DIRS = [
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
 
-# Make this unique, and don"t share it with anybody.
+# Make this unique, and don't share it with anybody.
 SECRET_KEY = ""
 
 # List of callables that know how to import templates from various sources.
@@ -163,6 +176,7 @@ INSTALLED_APPS = [
     "django_filters",
     "staticfiles",
     "debug_toolbar",
+    "tagging_ext",
     
     # internal (for now)
     "basic_profiles",
@@ -173,7 +187,6 @@ INSTALLED_APPS = [
     "threadedcomments_extras",
     "tasks",
     
-    "tag_app",
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
@@ -221,6 +234,7 @@ AUTHENTICATED_EXEMPT_URLS = [
     r"^/account/password_reset",
     r"^/account/confirm_email",
     r"^/openid",
+    r"^/__debug__",
 ]
 
 DEBUG_TOOLBAR_CONFIG = {

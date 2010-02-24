@@ -9,6 +9,7 @@ from django.db.models import Q, get_app
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.utils.importlib import import_module
 from django.utils.translation import ugettext
 
 from django.contrib import messages
@@ -17,8 +18,6 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
-
-from pinax.utils.importlib import import_module
 
 # Only import dpaste Snippet Model if it's activated
 if "dpaste" in getattr(settings, "INSTALLED_APPS"):
@@ -74,7 +73,7 @@ def tasks(request, group_slug=None, template_name="tasks/task_list.html", bridge
     # default filtering
     state_keys = dict(workflow.STATE_CHOICES).keys()
     default_states = set(state_keys).difference(
-        # don"t show these states
+        # don't show these states
         set(["2", "3"])
     )
     
@@ -365,11 +364,11 @@ def user_tasks(request, username, group_slug=None, template_name="tasks/user_tas
     # default filtering
     state_keys = dict(workflow.STATE_CHOICES).keys()
     default_states = set(state_keys).difference(
-        # don"t show these states
+        # don't show these states
         set(["2", "3"])
     )
     
-    # have to store for each prefix because initial data isn"t support on the
+    # have to store for each prefix because initial data isn't support on the
     # FilterSet
     filter_data = {
         "a-state": list(default_states),
@@ -475,11 +474,11 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
     # default filtering
     state_keys = dict(workflow.STATE_CHOICES).keys()
     default_states = set(state_keys).difference(
-        # don"t show these states
+        # don't show these states
         set(["2", "3"])
     )
     
-    # have to store for each prefix because initial data isn"t support on the
+    # have to store for each prefix because initial data isn't support on the
     # FilterSet
     filter_data = {
         "state": list(default_states),
@@ -490,7 +489,7 @@ def focus(request, field, value, group_slug=None, template_name="tasks/focus.htm
     
     if field == "modified":
         try:
-            # @@@ this seems hackish and brittle but I couldn"t work out another way
+            # @@@ this seems hackish and brittle but I couldn't work out another way
             year, month, day = value.split("-")
             # have to int month and day in case zero-padded
             tasks = tasks.filter(modified__year=int(year), modified__month=int(month), modified__day=int(day))

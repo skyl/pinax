@@ -4,10 +4,9 @@ import sys
 
 from django.conf import settings
 from django.core.management import setup_environ, call_command
+from django.utils.importlib import import_module
 
 import pinax
-from pinax.utils.importlib import import_module
-
 
 #
 # thoughts on a test runner. the goal is to run all tests in Pinax.
@@ -155,7 +154,7 @@ def main():
     
     setup_test_environment()
     
-    call_command("test", *args, verbosity=int(options.verbosity))
+    call_command("test", verbosity=int(options.verbosity), *args)
     
     if cov:
         cov.stop()
