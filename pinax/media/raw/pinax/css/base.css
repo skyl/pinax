@@ -7,6 +7,7 @@ body {
     margin: 0 auto;
     font-family: "Monaco", "Courier", serif;
     min-width: 960px;
+    background: url('/site_media/static/pinax/images/logo.gif') no-repeat center 100px;
 }
 a {
     text-decoration: none;
@@ -85,7 +86,15 @@ div#footer {
 #tabhead form#locale_switcher {
     display: inline;
 }
-
+#tabhead ul.tabs {
+    position: relative;
+    width: 95%;
+    margin: 5px auto;
+}
+#tabhead .tabs li {
+    display: inline;
+    margin: 4px;
+}
 /* MESSAGES */
 ul#messages {
 }
