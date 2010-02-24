@@ -4,7 +4,7 @@ Themes
 ======
 
 A theme is a group of static media and templates that work together.
-Currently there is only one theme in pinax, 'default'.
+Currently there are two themes in pinax, "default" and "raw".
 In your project, the theme is set via the :ref:`PINAX_THEME <settings-pinax-theme>` setting.
 
 Static media for a pinax theme exist in ``pinax/media/<theme_name>/``.
@@ -38,7 +38,7 @@ Template inheritance
 --------------------
 
 Typical inheritance for a response rendering in pinax is like that of the 
-bookmarks list for example::
+add bookmarks form template for example::
 
     base.html --> site_base.html --> bookmarks/base.html --> bookmarks/add.html
 
@@ -54,6 +54,24 @@ Special Blocks
 see the :ref:`tabs reference <tabs>` for more information.
 
 
+Issues with site-level templates and media
+------------------------------------------
+
+Tabs are defined at the site level and some of the style is hard-coded to be compatible with the templates
+The style of the tabs is in ``<project>/media/css/site_tabs.css`` and
+``<project>/templates/site_base.html`` references this css file.
+These files are outside of the scope of the theme and will have to be customized within the project.
+
+
+Making Your Own Theme
+---------------------
+
+Templates consist of templates and media.
+You may start your own theme by recursively copying ``pinax/templates/raw``
+into ``pinax/templates/<theme_name>`` and likewise
+copying ``pinax/media/<raw>`` into ``pinax/media/<theme_name>``.
+You may then set ``PINAX_THEME = <theme_name>`` in your settings
+and customize the templates and media in your theme.
 
 .. _ref-default-templates:
 
@@ -92,8 +110,6 @@ This is the ultimate ancestor.  It is intended to be left within the theme dir.
         extra_head
     body.<body_class>
     body_class
-    
-
 
 ``../pinax/templates/default/facebox_js.html``
 
