@@ -1,23 +1,26 @@
 /* GENERAL TAB STYLING */
 
 #right_tabs {  /* shhh... really it's center */
-    position: absolute;
-    top: 1px;
     margin: 0 auto;
-    width:80%;
-    text-align:center;
+    width: 100%;
 }
 ul.tabs a, ul.tabs a:visited {
+    color: #444;
+    font-weight: bold;
+    text-decoration: none;
 }
 ul.tabs a:hover {
+    color: #bbb;
 }
 ul.tabs li {
     list-style-type: none;
     display: inline;
-    padding: 5px 0 4px;
-    margin: 0 1px; /* to compensate for border */
 }
 ul.tabs li a {
+    padding: 2px 8px;
 }
 ul.tabs {
+    margin: 0 auto;
+    margin-bottom:0;
+    width:95%;
 }

@@ -2,9 +2,17 @@
 html, body {
 }
 body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    min-width: 960px;
+    width: 80%;
+    margin: 0 auto;
+    font-family: "Monaco", "Courier", serif;
+    min-width: 960px;
 }
-a, a:visited {
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: #13C;
 }
 img {
 }
@@ -46,12 +54,17 @@ div#site_wide_announcements {
 div#subnav {
 }
 div#body {
+    width: 85%;
+    margin: 0 auto;
 }
 div#footer {
+    margin: 50px auto;
+    width: 95%;
 }
 
 /* HEADER */
 #tabhead {
+    border-bottom: 1px solid #000; /* tab border */
 }
 #tabhead #left_tabs {
 }
@@ -62,6 +75,8 @@ div#footer {
 #tabhead .logo img {
 }
 #tabhead .login {
+    margin: 4px;
+    float: right;
 }
 #tabhead .login a, #tabhead .login a:visited {
 }
@@ -90,11 +105,16 @@ ul#messages .error {
 }
 
 /* SUBNAV */
-#subnav ul {
+#subnav {
+    width: 95%;
+    margin: 0 auto;
 }
 #subnav ul li {
+    display: inline;
+    margin: 4px;
 }
 #subnav ul a:link, #subnav ul a:visited {
+    font-size: 14px;
 }
 #subnav ul a:hover {
 }
