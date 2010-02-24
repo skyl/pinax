@@ -8,8 +8,8 @@ import pinax
 PINAX_ROOT = os.path.abspath(os.path.dirname(pinax.__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# tells Pinax to use the default theme
-PINAX_THEME = "default"
+# tells Pinax which theme to use: default, or raw
+PINAX_THEME = "raw"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

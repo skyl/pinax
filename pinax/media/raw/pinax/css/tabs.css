@@ -1,10 +1,21 @@
 /* GENERAL TAB STYLING */
 
+#center_tabs {
+    position: absolute;
+    top: 1px;
+    margin: 0 auto;
+    width:80%;
+    text-align:center;
+}
 ul.tabs a, ul.tabs a:visited {
 }
 ul.tabs a:hover {
 }
 ul.tabs li {
+    list-style-type: none;
+    display: inline;
+    padding: 5px 0 4px;
+    margin: 0 1px; /* to compensate for border */
 }
 ul.tabs li a {
 }
