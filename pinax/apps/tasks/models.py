@@ -6,13 +6,12 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
+from django.utils.importlib import import_module
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
-from pinax.utils.importlib import import_module
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -134,7 +133,7 @@ class Task(models.Model):
             th.owner = change_owner
         else:
             # This record is being created right now, hence the assignment
-            # of the creator to the task history object"s owner field.
+            # of the creator to the task history object's owner field.
             th.owner = self.creator
         
         # handle the comments
@@ -148,10 +147,10 @@ class Task(models.Model):
         return state choices allowed given current state and user
         """
         
-        # I"m the relevant state choices.
+        # I'm the relevant state choices.
         choices = []
         
-        # I"m the states already allowed for the users
+        # I'm the states already allowed for the users
         existing_states = []
         
         for transition in workflow.STATE_TRANSITIONS:
@@ -256,9 +255,9 @@ class TaskHistory(models.Model):
     def __unicode__(self):
         return "for " + str(self.task)
     
-    def save(self, force_insert=False, force_update=False):
+    def save(self, **kwargs):
         self.modified = datetime.now()
-        super(TaskHistory, self).save(force_insert, force_update)
+        super(TaskHistory, self).save(**kwargs)
 
 
 class Nudge(models.Model):
