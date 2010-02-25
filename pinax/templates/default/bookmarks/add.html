@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block extra_body %}
-    <script src="{{ STATIC_URL }}tagging_ext/js/jquery.autocomplete.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}pinax/js/jquery.autocomplete.js" type="text/javascript"></script>
     {% tag_autocomplete_js %}
     {# for some reason {% tag_autocomplete_js "bookmarks bookmark model" %} is no good #}
 {% endblock %}

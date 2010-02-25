@@ -30,10 +30,10 @@
             $('#blog_form').validate('{% url blog_form_validate %}', {type: 'table'});
         });
     </script>
-    <script src="{{ STATIC_URL }}tagging_ext/js/jquery.autocomplete.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}pinax/js/jquery.autocomplete.js" type="text/javascript"></script>
     {% load tagging_ext_tags %}
     {% tag_autocomplete_js "blog post all" %}
-    <script src="{{ STATIC_URL }}tagging_ext/js/jquery.autocomplete.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}pinax/js/jquery.autocomplete.js" type="text/javascript"></script>
     {% load tagging_ext_tags %}
     {% tag_autocomplete_js "blog post all" %}
 
