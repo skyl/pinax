@@ -199,7 +199,6 @@ INSTALLED_APPS = [
     "tribes",
     "photos",
     "topics",
-    "tagging_utils",
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"

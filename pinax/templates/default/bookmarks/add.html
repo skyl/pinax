@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load uni_form_tags %}
+{% load tagging_ext_tags %}
 
 {% block head_title %}{% blocktrans %}Add Bookmark{% endblocktrans %}{% endblock %}
 
@@ -23,8 +24,7 @@
 {% endblock %}
 
 {% block extra_body %}
-    <script src="{{ STATIC_URL }}tagging_utils/js/jquery.autocomplete.js" type="text/javascript"></script>
-    {% load tagging_utils_tags %}
+    <script src="{{ STATIC_URL }}tagging_ext/js/jquery.autocomplete.js" type="text/javascript"></script>
     {% tag_autocomplete_js %}
     {# for some reason {% tag_autocomplete_js "bookmarks bookmark model" %} is no good #}
 {% endblock %}

@@ -25,8 +25,8 @@
 {% endblock %}
 
 {% block extra_body %}
-    <script src="{{ STATIC_URL }}tagging_utils/js/jquery.autocomplete.js" type="text/javascript"></script>
-    {% load tagging_utils_tags %}
+    <script src="{{ STATIC_URL }}tagging_ext/js/jquery.autocomplete.js" type="text/javascript"></script>
+    {% load tagging_ext_tags %}
     {% tag_autocomplete_js %} {# site-wide tags and counts #}
     {% comment %}
     {% tag_autocomplete_js "blog post all" %}  {# tags for model, site-wide count #}
