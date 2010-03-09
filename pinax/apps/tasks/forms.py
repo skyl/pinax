@@ -11,11 +11,7 @@ from django.contrib.auth.models import User
 from pinax.apps.tasks.models import Task, TaskHistory, workflow
 from pinax.apps.tasks.widgets import ReadOnlyWidget
 
-<<<<<<< HEAD:pinax/apps/tasks/forms.py
 from tagging_ext.widgets import TagAutoCompleteInput
-=======
-from pinax.apps.tagging_utils.widgets import TagAutoCompleteInput
->>>>>>> upstream/master:pinax/apps/tasks/forms.py
 from tagging.forms import TagField
 
 
