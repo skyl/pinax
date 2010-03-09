@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-hotclub-0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 00:12+0100\n"
+"POT-Creation-Date: 2010-03-02 19:33+0100\n"
 "PO-Revision-Date: 2008-07-15 10:29+0100\n"
 "Last-Translator: Jannis Leidel <jannis@leidel.info>\n"
-"Language-Team:  <beshrkayali@gmail.com>\n"
+"Language-Team: <beshrkayali@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,13 +18,12 @@ msgstr ""
 "X-Poedit-Country: SYRIAN ARAB REPUBLIC\n"
 
 #: models.py:13
-#, fuzzy
 msgid "waiting list entry"
-msgstr "تعديل التاريخ"
+msgstr "سجل قائمة الإنتظار"
 
 #: models.py:14
 msgid "waiting list entries"
-msgstr ""
+msgstr "سجلات قائمة الإنتظار"
 
 #~ msgid "Username"
 #~ msgstr "إسم المستخدم"

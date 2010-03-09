@@ -188,11 +188,11 @@ determines, which one of these should be used. In practice the value of
 looking for when trying to combine all your media files into one single
 location. A small example::
     
-    src/pinax/media/default/pinax/images/logo.png
+    src/pinax/media/default/pinax/img/logo.png
 
 is a file that is specific to the "default" theme for Pinax while::
     
-    src/pinax/media/new_hotness/pinax/images/logo.png
+    src/pinax/media/new_hotness/pinax/img/logo.png
 
 would only be available in the "new_hotness" theme.
 
@@ -331,6 +331,10 @@ URCHIN_ID
 Used by ``pinax.apps.analytics`` as part of your account information on `Google
 Analytics`_. Based on this setting the JavaScript is generated that is then
 embedded into your website to allow Google Analytics to track your traffic.
+
+Tracking code will not be outputted if ``DEBUG`` is ``True`` to prevent
+unnecessary tracking.
+
 
 .. _google analytics: http://analytics.google.com/
 

@@ -5,7 +5,13 @@ from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 admin.autodiscover()
 
-from account.openid_consumer import PinaxConsumer
+from tagging.models import TaggedItem
+from wiki.models import Article as WikiArticle
+
+from pinax.apps.account.openid_consumer import PinaxConsumer
+from pinax.apps.projects.models import Project
+from pinax.apps.tasks.models import Task
+from pinax.apps.topics.models import Topic
 
 
 
@@ -13,9 +19,9 @@ handler500 = "pinax.views.server_error"
 
 
 if settings.ACCOUNT_OPEN_SIGNUP:
-    signup_view = "account.views.signup"
+    signup_view = "pinax.apps.account.views.signup"
 else:
-    signup_view = "signup_codes.views.signup"
+    signup_view = "pinax.apps.signup_codes.views.signup"
 
 
 urlpatterns = patterns("",
@@ -23,13 +29,13 @@ urlpatterns = patterns("",
         "template": "homepage.html",
     }, name="home"),
     
-    url(r"^admin/invite_user/$", "signup_codes.views.admin_invite_user", name="admin_invite_user"),
+    url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
     url(r"^account/signup/$", signup_view, name="acct_signup"),
     
     (r"^about/", include("about.urls")),
-    (r"^account/", include("account.urls")),
+    (r"^account/", include("pinax.apps.account.urls")),
     (r"^openid/(.*)", PinaxConsumer()),
-    (r"^profiles/", include("basic_profiles.urls")),
+    (r"^profiles/", include("pinax.apps.basic_profiles.urls")),
     (r"^notices/", include("notification.urls")),
     (r"^announcements/", include("announcements.urls")),
     (r"^tagging_ext/", include("tagging_ext.urls")),
@@ -37,19 +43,13 @@ urlpatterns = patterns("",
     (r"^attachments/", include("attachments.urls")),
     
     (r"^groups/", include("basic_groups.urls")),
-    (r"^tribes/", include("tribes.urls")),
-    (r"^projects/", include("projects.urls")),
+    (r"^tribes/", include("pinax.apps.tribes.urls")),
+    (r"^projects/", include("pinax.apps.projects.urls")),
     (r"^flag/", include("flag.urls")),
     
     (r"^admin/", include(admin.site.urls)),
 )
 
-from tagging.models import TaggedItem
-
-from projects.models import Project
-from tasks.models import Task
-from topics.models import Topic
-from wiki.models import Article as WikiArticle
 
 tagged_models = (
     dict(title="Projects",

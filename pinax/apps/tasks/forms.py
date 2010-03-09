@@ -8,10 +8,14 @@ from django.utils.translation import ugettext
 
 from django.contrib.auth.models import User
 
-from tasks.models import Task, TaskHistory, workflow
-from tasks.widgets import ReadOnlyWidget
+from pinax.apps.tasks.models import Task, TaskHistory, workflow
+from pinax.apps.tasks.widgets import ReadOnlyWidget
 
+<<<<<<< HEAD:pinax/apps/tasks/forms.py
 from tagging_ext.widgets import TagAutoCompleteInput
+=======
+from pinax.apps.tagging_utils.widgets import TagAutoCompleteInput
+>>>>>>> upstream/master:pinax/apps/tasks/forms.py
 from tagging.forms import TagField
 
 

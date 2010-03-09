@@ -22,12 +22,12 @@ association_model = models.get_model("django_openid", "Association")
 if association_model is not None:
     from django_openid.models import UserOpenidAssociation
 
-from account.utils import get_default_redirect, user_display
-from account.models import OtherServiceInfo
-from account.forms import AddEmailForm, ChangeLanguageForm, ChangePasswordForm
-from account.forms import ChangeTimezoneForm, LoginForm, ResetPasswordKeyForm
-from account.forms import ResetPasswordForm, SetPasswordForm, SignupForm
-from account.forms import TwitterForm
+from pinax.apps.account.utils import get_default_redirect, user_display
+from pinax.apps.account.models import OtherServiceInfo
+from pinax.apps.account.forms import AddEmailForm, ChangeLanguageForm, ChangePasswordForm
+from pinax.apps.account.forms import ChangeTimezoneForm, LoginForm, ResetPasswordKeyForm
+from pinax.apps.account.forms import ResetPasswordForm, SetPasswordForm, SignupForm
+from pinax.apps.account.forms import TwitterForm
 
 
 
@@ -120,14 +120,13 @@ def signup(request, **kwargs):
     if request.method == "POST":
         form = form_class(request.POST, group=group)
         if form.is_valid():
-            credentials = form.save(request=request)
+            user = form.save(request=request)
             if settings.ACCOUNT_EMAIL_VERIFICATION:
                 return render_to_response("account/verification_sent.html", {
                     "email": form.cleaned_data["email"],
                 }, context_instance=RequestContext(request))
             else:
-                user = authenticate(**credentials)
-                auth_login(request, user)
+                form.login(request, user)
                 messages.add_message(request, messages.SUCCESS,
                     ugettext("Successfully logged in as %(user)s.") % {
                         "user": user_display(user)

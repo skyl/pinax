@@ -5,16 +5,16 @@ from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 admin.autodiscover()
 
-from tagging.models import TaggedItem
-
-from account.openid_consumer import PinaxConsumer
-from blog.models import Post
 from bookmarks.models import BookmarkInstance
-from photos.models import Image
-from projects.models import Project
-from tasks.models import Task
-from topics.models import Topic
+from tagging.models import TaggedItem
 from wiki.models import Article as WikiArticle
+
+from pinax.apps.account.openid_consumer import PinaxConsumer
+from pinax.apps.blog.models import Post
+from pinax.apps.photos.models import Image
+from pinax.apps.projects.models import Project
+from pinax.apps.tasks.models import Task
+from pinax.apps.topics.models import Topic
 
 
 
@@ -26,19 +26,19 @@ urlpatterns = patterns("",
         "template": "homepage.html",
     }, name="home"),
     
-    url(r"^admin/invite_user/$", "signup_codes.views.admin_invite_user", name="admin_invite_user"),
-    url(r"^account/signup/$", "signup_codes.views.signup", name="acct_signup"),
+    url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
+    url(r"^account/signup/$", "pinax.apps.signup_codes.views.signup", name="acct_signup"),
     
-    (r"^account/", include("account.urls")),
+    (r"^account/", include("pinax.apps.account.urls")),
     (r"^openid/(.*)", PinaxConsumer()),
-    (r"^profiles/", include("basic_profiles.urls")),
+    (r"^profiles/", include("pinax.apps.basic_profiles.urls")),
     (r"^notices/", include("notification.urls")),
     (r"^announcements/", include("announcements.urls")),
     (r"^tagging_ext/", include("tagging_ext.urls")),
     (r"^attachments/", include("attachments.urls")),
     (r"^bookmarks/", include("bookmarks.urls")),
-    (r"^tasks/", include("tasks.urls")),
-    (r"^topics/", include("topics.urls")),
+    (r"^tasks/", include("pinax.apps.tasks.urls")),
+    (r"^topics/", include("pinax.apps.topics.urls")),
     (r"^comments/", include("threadedcomments.urls")),
     (r"^wiki/", include("wiki.urls")),
     

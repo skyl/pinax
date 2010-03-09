@@ -56,19 +56,6 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
-ugettext = lambda s: s
-LANGUAGES = (
-    ('en', u'English'),
-    ('de', u'Deutsch'),
-    ('es', u'Español'),
-    ('fr', u'Français'),
-    ('sv', u'Svenska'),
-    ('pt-br', u'Português brasileiro'),
-    ('he', u'עברית'),
-    ('ar', u'العربية'),
-    ('it', u'Italiano'),
-)
-
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "site_media", "media")
@@ -112,7 +99,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django_openid.consumer.SessionConsumer",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "account.middleware.LocaleMiddleware",
+    "pinax.apps.account.middleware.LocaleMiddleware",
     "django.middleware.doc.XViewMiddleware",
     "pagination.middleware.PaginationMiddleware",
     "pinax.middleware.security.HideSensistiveFieldsMiddleware",
@@ -138,12 +125,12 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     
     "notification.context_processors.notification",
     "announcements.context_processors.site_wide_announcements",
-    "account.context_processors.openid",
-    "account.context_processors.account",
+    "pinax.apps.account.context_processors.openid",
+    "pinax.apps.account.context_processors.account",
 ]
 
 INSTALLED_APPS = [
-    # included
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -151,6 +138,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.humanize",
+    
     "pinax.templatetags",
     
     # external
@@ -166,11 +154,13 @@ INSTALLED_APPS = [
     "staticfiles",
     "debug_toolbar",
     
-    # internal (for now)
-    "analytics",
-    "basic_profiles",
-    "account",
-    "signup_codes",
+    # Pinax
+    "pinax.apps.analytics",
+    "pinax.apps.basic_profiles",
+    "pinax.apps.account",
+    "pinax.apps.signup_codes",
+    
+    # project
     "about",
 ]
 
@@ -200,7 +190,7 @@ ACCOUNT_UNIQUE_EMAIL = EMAIL_CONFIRMATION_UNIQUE_EMAIL = False
 
 if ACCOUNT_EMAIL_AUTHENTICATION:
     AUTHENTICATION_BACKENDS = [
-        "account.auth_backends.EmailModelBackend",
+        "pinax.apps.account.auth_backends.EmailModelBackend",
     ]
 else:
     AUTHENTICATION_BACKENDS = [

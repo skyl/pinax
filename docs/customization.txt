@@ -29,14 +29,14 @@ basic_project
     included by default. From here you can add any extra functionality and
     applications that you would like.
 
-cms_project_company
+cms_company_project
     A very simple CMS that lets you set up templates and then edit content,
     including images, right in the frontend of the site.
     
     The sample media, templates and content including in the project demonstrate
     a basic company website.
 
-cms_project_holidayhouse
+cms_holidayhouse_project
     A very simple CMS that lets you set up templates and then edit content,
     including images, right in the frontend of the site.
     
@@ -71,7 +71,12 @@ social_project
     locations and user-to-user messaging.
     
     In 0.5 this was called ``complete_project``.
-    
+
+zero_project
+    This project lays the foundation for all other Pinax starter projects. It
+    provides the project directory layout and some key infrastructure apps on
+    which the other starter projects are based.
+
 .. _customization-cloneproject:
 
 pinax-admin clone_project
