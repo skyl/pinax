@@ -4,6 +4,8 @@ import os.path
 import posixpath
 import pinax
 
+ugettext = lambda s: s
+
 PINAX_ROOT = os.path.abspath(os.path.dirname(pinax.__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -118,7 +120,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 INSTALLED_APPS = [
-    # included
+    # Django
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -127,17 +130,24 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django.contrib.webdesign",
     
-    # pinax
+    "pinax.templatetags",
+    
+    # external
     "staticfiles",
     "biblion",
     
-    # local
+    # Pinax
+    "pinax.apps.analytics",
     
-    # admin
-    "django.contrib.admin",
+    # project
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+BIBLION_SECTIONS = [
+    ("technical", ugettext(u"Technical")),
+    ("business", ugettext(u"Business")),
+]
 
 #TWITTER_USERNAME = ""
 #TWITTER_PASSWORD = ""
@@ -146,6 +156,8 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 # @@@ this shouldn"t beed need but are :-(
 CONTACT_EMAIL = ""
 SITE_NAME = ""
+
+# URCHIN_ID = "ua-..."
 
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,
