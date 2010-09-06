@@ -172,11 +172,7 @@ django_uni_form
 django_voting
     uses library simplejson
 
-django_wikiapp
-    uses apps notification, tagging
-    and libraries atomformat, creoleparser, diff_match_patch, docutils
-
-template_utils
+django_wakawaka
 
 
 Pinax Apps Within Projects
